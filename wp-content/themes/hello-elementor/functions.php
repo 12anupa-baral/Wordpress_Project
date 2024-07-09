@@ -4,6 +4,26 @@
  *
  * @package HelloElementor
  */
+function custom_api_list_route() {
+    add_rewrite_rule('^lists/?$', 'index.php?custom_api_list=1', 'top');
+}
+add_action('init', 'custom_api_list_route');
+
+function custom_api_list_query_vars($query_vars) {
+    $query_vars[] = 'custom_api_list';
+    return $query_vars;
+}
+add_filter('query_vars', 'custom_api_list_query_vars');
+
+function custom_api_list_template($template) {
+    if (get_query_var('custom_api_list')) {
+        return locate_template('custom-api-list-template.php');
+    }
+    return $template;
+}
+add_filter('template_include', 'custom_api_list_template');
+
+
 
 if ( ! defined( 'ABSPATH' ) ) {
 	exit; // Exit if accessed directly.
